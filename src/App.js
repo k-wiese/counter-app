@@ -7,9 +7,9 @@ class App extends Component {
 
   state = { 
     counters: [
-        {id:1,value:4},
-        {id:2,value:0},
-        {id:3,value:0},
+        {id:1,value:1},
+        {id:2,value:2},
+        {id:3,value:3},
         {id:4,value:0}
     ]
   };
@@ -25,13 +25,25 @@ class App extends Component {
     console.log('App - Mounted')
   }
 
+  handleDecrement = counter => {
 
-  handleIncrement = counter => {
+    if(!(counter.value === 0)) 
+    {
       const counters = [...this.state.counters];
       const index = counters.indexOf(counter);
       counters[index] = {...counter};
-      counters[index].value++;
+      counters[index].value--;
       this.setState({counters});
+    }
+    
+  }
+
+  handleIncrement = counter => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = {...counter};
+    counters[index].value++;
+    this.setState({counters});
   };
 
   handleReset = () => {
@@ -44,7 +56,12 @@ class App extends Component {
 
   handleDelete = (counterId) => {
       const counters = this.state.counters.filter(c => c.id !== counterId);
-      this.setState({counters} );
+      this.setState({counters});
+  };
+
+  handleAdd = () => {
+      this.setState({ counters: [...this.state.counters, {id: this.state.counters.length + 1,value:1}] })
+
   };
 
   render() {
@@ -57,15 +74,15 @@ class App extends Component {
       <main className="container">
   
         <Counters
-
           counters={this.state.counters}
           onReset={this.handleReset}
           onIncrement={this.handleIncrement}
+          onDecrement={this.handleDecrement}
+          onAdd={this.handleAdd}
           onDelete={this.handleDelete}
         />
   
       </main>
-  
       </React.Fragment>
     );
   }
